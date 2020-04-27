@@ -1,0 +1,83 @@
+# Learn detailed information about the fields of an extension.yaml file in the docs
+
+name: firerun # Identifier for the extension
+version: 0.0.1 # Follow semver versioning
+specVersion: v1beta # Version of the Firebase Extensions specification
+
+# Friendly display name for your extension (~3-5 words)
+displayName: fireRun.io
+
+# Brief description of the task your extension performs (~1 sentence)
+description: >-
+  Daily Firebase Usage and Spend Report
+
+license: CC-BY-NC-ND-4.0  # https://spdx.org/licenses/
+
+# Public URL for the source code of your extension
+# sourceUrl: https://github.com/firebase/firebase-tools/tree/master/templates/extensions
+
+billingRequired: true # Learn more in the docs
+
+author:
+  authorName: fireRun.io
+  email: support@firerun.io
+  url: https://www.firerun.io
+
+contributors:
+  - authorName: Geoffrey Bourne
+    email: geoff@firerun.io
+    url: https://www.firerun.io
+
+# For your extension to interact with other Google APIs (like Firestore, Cloud Storage, or Cloud Translation),
+# set the `apis` field. In addition, set the `roles` field to grant appropriate IAM access to interact with these products.
+# Learn about these fields in the docs
+
+apis:
+  - apiName: firestore.googleapis.com
+    reason: Gather metric data on Firebase Firestore (read, writes, and delete count).
+
+  - apiName: firebasehosting.googleapis.com
+    reason: Gather metric data on Firebase Hosting (storage and network).
+
+  - apiName: cloudfunctions.googleapis.com
+    reason: Gather metric data on Firebase Cloud Functions (invocations).
+
+  - apiName: compute.googleapis.com
+    reason: Gather metric data on Firebase Cloud Functions (usage).
+
+roles:
+  - role: monitoring.viewer
+    reason: View only of metrics data for creating your report.
+
+# Learn about the `resources` field in the docs
+resources:
+  - name: scheduledFirerunExt
+    type: firebaseextensions.v1beta.scheduledFunction
+    description: >-
+      Create the fireRun.io daily report.
+    properties:
+      sourceDirectory: .
+      location: us-central1
+      runtime: "nodejs10"
+      scheduleTrigger:
+        schedule: every day 08:00
+
+# Learn about the `params` field in the docs
+params:
+  - param: EMAIL
+    type: string
+    label: Email Address
+    description: >-
+      Enter your email address to receive your daily report and manage your account.
+    validationRegex: ^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$
+    validationErrorMessage: Please enter a valid email address to send your report to
+    required: true
+    immutable: false
+
+  - param: TOKEN
+    type: string
+    label: Access Token from fireRun.io
+    description: >-
+      Get your access token by signing up at [fireRun.io](https://www.firerun.io/app/signup?utm=ext).
+    required: true
+    immutable: false
