@@ -78,6 +78,6 @@ params:
     type: string
     label: Access Token from fireRun.io
     description: >-
-      Get your access token by signing up at [fireRun.io](https://www.firerun.io/app/signup?utm=ext).
+      Get your access token by signing up at https://www.firerun.io/app/signup?utm=ext
     required: true
     immutable: false
