@@ -187,12 +187,10 @@ const getData = async (call, client, projectId, lessDays = 1) => {
     if (!call.method || call.method === data.metric.labels.method) {
       // exit if don't want to aggregate the data
       data.points.every((point, i) => {
-        let val;
+        let val = point.value[point.value.value];
         if (point.value.value === "distributionValue") {
           const tmp = parseFloat(val.mean);
           val = !isNaN(tmp) ? tmp : 0;
-        } else {
-          val = point.value[point.value.value];
         }
 
         record.push([interval.endTime.seconds - i * call.interval, val]);
