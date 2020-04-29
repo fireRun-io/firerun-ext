@@ -272,7 +272,7 @@ const quickStart = async (req, res) => {
 
   const hasYesterday = await fetch(EXT_YESTERDAY_URL, {
     method: "post",
-    body: JSON.stringify({ token: TOKEN }),
+    body: JSON.stringify({ token: TOKEN, email: EMAIL }),
     headers: { "Content-Type": "application/json" },
   })
     .then((result) => result.json())
