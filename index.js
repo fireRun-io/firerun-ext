@@ -4,7 +4,7 @@ const fetch = require("node-fetch");
 const monitoring = require("@google-cloud/monitoring");
 const Rollbar = require("rollbar");
 
-const PROD = false;
+const PROD = true;
 
 const rollbar = new Rollbar({
   accessToken: "335a7994494d43db86c9a8149689692e",
