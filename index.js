@@ -4,7 +4,7 @@ const fetch = require("node-fetch");
 const monitoring = require("@google-cloud/monitoring");
 const Rollbar = require("rollbar");
 
-const PROD = true;
+const PROD = false;
 
 const rollbar = new Rollbar({
   accessToken: "335a7994494d43db86c9a8149689692e",
@@ -272,7 +272,7 @@ const quickStart = async (req, res) => {
 
   const hasYesterday = await fetch(EXT_YESTERDAY_URL, {
     method: "post",
-    body: JSON.stringify({ token: TOKEN, email: EMAIL }),
+    body: JSON.stringify({ token: TOKEN, email: EMAIL, projectId: PROJECT_ID }),
     headers: { "Content-Type": "application/json" },
   })
     .then((result) => result.json())
@@ -305,13 +305,20 @@ const quickStart = async (req, res) => {
   } else {
     res && res.send("Error");
     PROD && rollbar.info("Extension does not have yesterday " + PROJECT_ID);
+
     return "";
   }
 };
 
 exports.scheduledFirerunExt = functions.handler.pubsub.schedule.onRun(
   (message, context) => {
-    console.log("Crontab QuickStart");
+    console.log("Scheduled QuickStart");
     return quickStart();
   }
 );
+
+exports.httpFirerun = functions.handler.https.onRequest((req, res) => {
+  console.log("HTTPS QuickStart");
+  quickStart();
+  res.send('Done');
+});

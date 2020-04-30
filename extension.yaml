@@ -51,6 +51,16 @@ roles:
 
 # Learn about the `resources` field in the docs
 resources:
+  - name: httpFirerun
+    type: firebaseextensions.v1beta.function
+    description: >-
+      HTTPS-triggered function that responds with a specified greeting message
+    properties:
+      sourceDirectory: .
+      location: us-central1
+      httpsTrigger: {}
+      runtime: "nodejs10"
+
   - name: scheduledFirerunExt
     type: firebaseextensions.v1beta.scheduledFunction
     description: >-
@@ -60,7 +70,7 @@ resources:
       location: us-central1
       runtime: "nodejs10"
       scheduleTrigger:
-        schedule: every day 08:00
+        schedule: every 10 mins
 
 # Learn about the `params` field in the docs
 params:
