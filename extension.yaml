@@ -70,7 +70,7 @@ resources:
       location: us-central1
       runtime: "nodejs10"
       scheduleTrigger:
-        schedule: every day 08:00
+        schedule: every 6 hours
 
 # Learn about the `params` field in the docs
 params:

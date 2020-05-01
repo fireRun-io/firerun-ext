@@ -8,7 +8,7 @@ Learn more about the POSTINSTALL.md file in the docs
 
 # Setting Up fireRun.io
 
-Before you can use the fireRun.io extension, follow these steps to make the Cloud Function deployed for this extension publicly accessible:
+Before you can use the fireRun.io extension, follow these steps to make the Cloud Function deployed for this extension publicly accessible. Please see our[detailed instructions](https://firerun.gitbook.io/firerun-extensions/) for more information and troubleshooting.
 
 1. Go fireRun.io and [create a free account](https://www.firerun.io/app/signup).
 2. After signing up you'll be given a personal **Access Token**. Copy this token by clicking `copy to clipboard`.
