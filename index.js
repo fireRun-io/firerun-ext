@@ -4,17 +4,19 @@ const fetch = require("node-fetch");
 const monitoring = require("@google-cloud/monitoring");
 const Rollbar = require("rollbar");
 
-const PROD = true;
+const PROD = false;
+
+console.log(process.env.ROLLBAR === "true");
 
 const rollbar = new Rollbar({
-  accessToken: "335a7994494d43db86c9a8149689692e",
-  captureUncaught: true,
-  captureUnhandledRejections: true,
-  payload: {
-    environment: PROD ? "production" : "development",
-  },
-  enabled: true,
-});
+      accessToken: "335a7994494d43db86c9a8149689692e",
+      captureUncaught: true,
+      captureUnhandledRejections: true,
+      payload: {
+        environment: PROD ? "production" : "development",
+      },
+      enabled: process.env.ROLLBAR === "true",
+    });
 
 let apiCalls, apiMap;
 
@@ -244,9 +246,9 @@ const formatDate = (lessDays = 1, lessMonths) => {
 const quickStart = async (req, res) => {
   !PROD && console.log("Environment: Development");
 
-  const { EMAIL, TOKEN, PROJECT_ID } = process.env;
+  const { EMAIL, TOKEN, PROJECT_ID, EXT_INSTANCE_ID } = process.env;
 
-  console.log("Project ID: " + PROJECT_ID);
+  console.log(`Project ID: ${PROJECT_ID} Install ID: ${EXT_INSTANCE_ID}`);
   PROD && rollbar.info("Started processing extension: " + PROJECT_ID);
 
   let client;
@@ -272,7 +274,12 @@ const quickStart = async (req, res) => {
 
   const hasYesterday = await fetch(EXT_YESTERDAY_URL, {
     method: "post",
-    body: JSON.stringify({ token: TOKEN, email: EMAIL, projectId: PROJECT_ID }),
+    body: JSON.stringify({
+      token: TOKEN,
+      email: EMAIL,
+      projectId: PROJECT_ID,
+      installId: EXT_INSTANCE_ID,
+    }),
     headers: { "Content-Type": "application/json" },
   })
     .then((result) => result.json())
@@ -290,6 +297,7 @@ const quickStart = async (req, res) => {
         date: formatDate(i),
         projectId: PROJECT_ID,
         token: TOKEN,
+        installId: EXT_INSTANCE_ID,
         data,
       };
 
@@ -320,5 +328,5 @@ exports.scheduledFirerunExt = functions.handler.pubsub.schedule.onRun(
 exports.httpFirerun = functions.handler.https.onRequest((req, res) => {
   console.log("HTTPS QuickStart");
   quickStart();
-  res.send('Done');
+  res.send("Done");
 });

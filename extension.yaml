@@ -11,7 +11,7 @@ displayName: fireRun.io
 description: >-
   Daily Firebase Usage and Spend Report
 
-license: CC-BY-NC-ND-4.0  # https://spdx.org/licenses/
+license: CC-BY-NC-ND-4.0 # https://spdx.org/licenses/
 
 # Public URL for the source code of your extension
 # sourceUrl: https://github.com/firebase/firebase-tools/tree/master/templates/extensions
@@ -91,3 +91,17 @@ params:
       Get your access token by signing up at https://www.firerun.io/app/signup?utm=ext
     required: true
     immutable: false
+
+  - param: ROLLBAR
+    type: select
+    label: Allow Rollbar
+    description: >-
+      We would like to send crash reports to Rollbar for analysis and to help make a better product. For more info on security see here: https://docs.firerun.io/secuity/how-secure-is-my-data
+    options:
+      - label: Yes
+        value: true
+      - label: No
+        value: false
+    default: true
+    required: true
+    immutable: true
