@@ -4,7 +4,7 @@ const fetch = require("node-fetch");
 const monitoring = require("@google-cloud/monitoring");
 const Rollbar = require("rollbar");
 
-const PROD = false;
+const PROD = true;
 
 console.log(process.env.ROLLBAR === "true");
 
@@ -44,16 +44,16 @@ const getInterval = (min, yesterday, month, lessDays = 1) => {
     start = new Date(date.getFullYear(), date.getMonth(), 1);
   } else {
     start = new Date(utc.toUTCString());
-    start.setDate(start.getDate() - lessDays); // use -1 for yesterday  // put back
+    start.setDate(start.getDate() - lessDays);  // use -1 for yesterday  
   }
 
-  start.setHours(0, 0, 0, 0); // Set to midnight
+  start.setHours(0, 0, 0, 0);                   // Set to midnight
   start.setHours(start.getHours() + 3);
 
   const end = new Date(utc.toUTCString());
-  end.setDate(end.getDate() - lessDays); //  -1 as yesterday at 11:59 // put back
-  end.setHours(23, 59, 59, 999); // put back
-  end.setHours(end.getHours() + 3); // put back
+  end.setDate(end.getDate() - lessDays);        //  -1 as yesterday at 11:59 
+  end.setHours(23, 59, 59, 999);                
+  end.setHours(end.getHours() + 3); 
 
   const interval = {
     startTime: {
@@ -76,25 +76,12 @@ const checkOverage = (call) => {
   if (callReturn.limit !== null && callReturn.limit !== undefined) {
     const diff = callReturn.limit - callReturn.totalUsage;
 
-    /*
-    if (callReturn.key === "firestore_read") {
-      console.log("\n--------------");
-      console.log("Key: " + callReturn.key);
-      console.log("Limit: " + callReturn.limit);
-      console.log("Total Usage: " + callReturn.totalUsage);
-      console.log("Diff: " + diff);
-    }
-    */
-
     if (diff > 0) {
       callReturn.remainingLimit = diff;
     } else {
-      // const absDiff = Math.abs(diff);
+      const absDiff = Math.abs(diff);             // Include free tier
 
-      const absDiff = callReturn.totalUsage;
       callReturn.overageDiff = absDiff;
-
-      // console.log("Abs Diff: " + absDiff);
 
       if (callReturn.overage && callReturn.overage_per) {
         const cost = (absDiff / callReturn.overage_per) * callReturn.overage;
@@ -108,8 +95,9 @@ const checkOverage = (call) => {
 };
 
 const getTotalUsage = (call, descriptor, record, total) => {
+  // add_all for Cloud Storage to add all the buckets up
   const usage = parseFloat(
-    descriptor.metricKind === "DELTA"
+    descriptor.metricKind === 'DELTA' || call.add_all
       ? total
       : record.length > 0
       ? record[record.length - 1][1]
@@ -133,9 +121,7 @@ const getData = async (call, client, projectId, lessDays = 1) => {
 
   const tempDes = await client.getMetricDescriptor(request).catch((err) => {
     const msg = `Metrics Error: ${err} : Project: ${projectId} : Call: ${call.key}`;
-    console.error("-----------------");
-    console.error(msg);
-    console.error("-----------------");
+    console.error(`-----------------"\n${msg}\n-----------------"`);
 
     return false;
   });
@@ -179,13 +165,6 @@ const getData = async (call, client, projectId, lessDays = 1) => {
 
   const [timeSeries] = ts;
   timeSeries.forEach((data) => {
-    /*
-      console.log("Timeseries: " + call.key);
-    if (call.key === "cloudstorage_requests") {
-      // console.log('Call Agg: ' + call.aggregate);
-      console.log("Points: " + JSON.stringify(data, null, 2));
-    }*/
-
     if (!call.method || call.method === data.metric.labels.method) {
       // exit if don't want to aggregate the data
       data.points.every((point, i) => {
