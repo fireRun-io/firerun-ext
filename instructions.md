@@ -13,7 +13,7 @@ If you want to create a test 'greet world' extension, use `firebase ext:dev:init
 
 ## Install Locally
 
-`git clone https://github.com/gbourne1/firerun-extension.git`
+`git clone https://github.com/fireRun-io/firerun-ext`
 
 ## Run Locally
 
@@ -23,6 +23,8 @@ If you want to create a test 'greet world' extension, use `firebase ext:dev:init
 2. cd functions
 3. Install the modules with `npm install`
 4. Run the emulator: `firebase ext:dev:emulators:start --test-params=test-params.env --project=[projectId]`
+
+**Note:** Please create a .env file with params for EMAIL, TOKEN, and ROLLBAR
 
 Example: `firebase ext:dev:emulators:start --test-params=test-params.env --project=firerun`
 
