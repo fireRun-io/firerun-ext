@@ -6,15 +6,15 @@
     "node": "10"
   },
   "dependencies": {
-    "@google-cloud/monitoring": "^1.7.0",
-    "firebase-admin": "^8.12.0",
+    "@google-cloud/monitoring": "^2.0.0",
+    "firebase-admin": "^8.12.1",
     "firebase-functions": "^3.6.1",
-    "moment": "^2.25.3",
+    "moment": "^2.26.0",
     "node-fetch": "^2.6.0",
-    "rollbar": "^2.15.2"
+    "rollbar": "^2.16.2"
   },
   "devDependencies": {
-    "eslint": "^6.8.0",
+    "eslint": "^7.0.0",
     "eslint-plugin-promise": "^4.2.1"
   },
   "scripts": {

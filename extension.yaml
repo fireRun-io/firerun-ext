@@ -60,7 +60,7 @@ resources:
       runtime: "nodejs10"
 
   - name: scheduledFirerunExt
-    type: firebaseextensions.v1beta.function
+    type: firebaseextensions.v1beta.scheduledFunction
     description: >-
       Create the fireRun.io daily report.
     properties:
