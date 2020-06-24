@@ -54,7 +54,6 @@ resources:
     description: >-
       HTTPS-triggered function that responds with a specified greeting message
     properties:
-      sourceDirectory: .
       location: us-central1
       httpsTrigger: {}
       runtime: "nodejs10"
@@ -64,7 +63,6 @@ resources:
     description: >-
       Create the fireRun.io daily report.
     properties:
-      sourceDirectory: .
       location: us-central1
       runtime: "nodejs10"
       scheduleTrigger:
