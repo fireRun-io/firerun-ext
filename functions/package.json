@@ -9,7 +9,7 @@
     "@google-cloud/monitoring": "^1.7.0",
     "firebase-admin": "^8.12.1",
     "firebase-functions": "^3.7.0",
-    "moment": "^2.27.0",
+    "moment": "^2.29.2",
     "node-fetch": "^2.6.0",
     "rollbar": "^2.17.0"
   },
